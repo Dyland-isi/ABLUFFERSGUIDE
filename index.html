@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Bluffers Guide — Media Consumption Final Boss</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Cursor glow effect -->
+    <div class="cursor-glow" id="cursorGlow"></div>
+
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <div class="nav-inner">
+            <a href="#hero" class="nav-logo">ABG</a>
+            <div class="nav-links">
+                <a href="#about">About</a>
+                <a href="#stats">Reach</a>
+                <a href="#content">Content</a>
+                <a href="#features">Featured</a>
+                <a href="#collab">Collaborate</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <canvas id="globeCanvas" class="globe-canvas"></canvas>
+        <div class="hero-content">
+            <div class="hero-tag">MEDIA PITCH DECK</div>
+            <h1 class="hero-title">
+                <span class="title-line">A BLUFFERS</span>
+                <span class="title-line accent">GUIDE</span>
+            </h1>
+            <p class="hero-subtitle">media consumption final boss.</p>
+            <p class="hero-credit">by <span class="accent">@william_dalgleish</span></p>
+            <div class="hero-cta">
+                <a href="#content" class="btn btn-primary">Explore the Work</a>
+                <a href="#collab" class="btn btn-outline">Let's Collaborate</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="scroll-line"></div>
+            <span>Scroll</span>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section about" id="about">
+        <div class="container">
+            <div class="section-grid">
+                <div class="section-label">
+                    <span class="label-num">01</span>
+                    <span class="label-text">THE VOICE</span>
+                </div>
+                <div class="section-content">
+                    <h2 class="section-title">Culture doesn't need gatekeepers.<br><span class="accent">It needs storytellers.</span></h2>
+                    <p class="section-desc">A Bluffers Guide is a media platform built on genuine passion for music, fashion, and culture. Created by William Dalgleish, it delivers long-form, deeply personal essays that spotlight emerging artists, underground brands, and the cultural moments that matter.</p>
+                    <p class="section-desc">Every piece is a love letter to the craft — written with encyclopaedic knowledge, sharp wit, and an authenticity that resonates with thousands of engaged readers across the UK music and fashion scene.</p>
+                    <div class="about-tags">
+                        <span class="tag">Music</span>
+                        <span class="tag">Fashion</span>
+                        <span class="tag">Culture</span>
+                        <span class="tag">UK Scene</span>
+                        <span class="tag">Emerging Artists</span>
+                        <span class="tag">Streetwear</span>
+                        <span class="tag">Long-form</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="section stats" id="stats">
+        <div class="container">
+            <div class="section-label center">
+                <span class="label-num">02</span>
+                <span class="label-text">THE REACH</span>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card" data-count="4339">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Followers</div>
+                    <div class="stat-detail">Highly engaged community</div>
+                </div>
+                <div class="stat-card" data-count="318">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Posts</div>
+                    <div class="stat-detail">Deep-dive content pieces</div>
+                </div>
+                <div class="stat-card" data-count="3847">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Following</div>
+                    <div class="stat-detail">Embedded in the scene</div>
+                </div>
+                <div class="stat-card highlight-stat">
+                    <div class="stat-number">∞</div>
+                    <div class="stat-label">Passion</div>
+                    <div class="stat-detail">Every post is a labour of love</div>
+                </div>
+            </div>
+            <div class="stats-footnote">
+                <p>Brand partnerships include invitations from <strong>Spotify</strong> for exclusive listening events, with co-signs from artists across the UK music landscape.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content Showcase -->
+    <section class="section content-showcase" id="content">
+        <div class="container">
+            <div class="section-grid">
+                <div class="section-label">
+                    <span class="label-num">03</span>
+                    <span class="label-text">THE WORK</span>
+                </div>
+                <div class="section-content">
+                    <h2 class="section-title">Bold takes.<br><span class="accent">Bolder typography.</span></h2>
+                    <p class="section-desc">Each post follows a signature format: a punchy, provocative headline card paired with a deep, personal essay. The visual identity is unmistakable — clean, typographic, and designed to stop the scroll.</p>
+                </div>
+            </div>
+        </div>
+        <div class="content-scroll">
+            <div class="content-track" id="contentTrack">
+                <div class="content-card">
+                    <div class="card-headline">AVERE FORZA ARE MAKING GARMS FOR THE CONNOISSEURS</div>
+                    <div class="card-category">FASHION</div>
+                    <div class="card-excerpt">On Geoffrey Owusu's brand becoming one of the most crucial in British streetwear — rich colours, distinctive imagery, and painstaking attention to detail.</div>
+                </div>
+                <div class="content-card">
+                    <div class="card-headline">SLEW'S MUSIC SOUNDS LIKE WEARING ARCHIVE MARGIELA TO THE VILLAGE PUB</div>
+                    <div class="card-category">MUSIC</div>
+                    <div class="card-excerpt">On individuality, otherness, and an artist whose otherworldly sound and authoritative delivery puts him in a lane of his own.</div>
+                </div>
+                <div class="content-card">
+                    <div class="card-headline">UNKNOWN T IS ONE OF MY FAVOURITE RAPPERS. WHAT'S HE UP TO?</div>
+                    <div class="card-category">MUSIC</div>
+                    <div class="card-excerpt">From Colors folklore to BBK to Hear Dat Styl — a celebration of precision, restraint, and two greats having a go.</div>
+                </div>
+                <div class="content-card">
+                    <div class="card-headline">SINN6R'S MUSIC MAKES ME WANT TO TWO-FOOT SOMEONE</div>
+                    <div class="card-category">MUSIC</div>
+                    <div class="card-excerpt">On frenzied tour crowds, supersonic momentum, and a Federal project that balances organised chaos with touching introspection.</div>
+                </div>
+                <div class="content-card">
+                    <div class="card-headline">SOPHIA STEL'S MUSIC IS FOR GREY SKIES AND MIXED EMOTIONS</div>
+                    <div class="card-category">MUSIC</div>
+                    <div class="card-excerpt">A24 Music's second signee — recording in weed smoke and digicam flashes, walking for Ann Demeulemeester. A future great.</div>
+                </div>
+                <div class="content-card">
+                    <div class="card-headline">AFROSURREALIST IS THE FLAG BEARER FOR THE FUTURE OF BRITISH MUSIC</div>
+                    <div class="card-category">CULTURE</div>
+                    <div class="card-excerpt">On buybritish, the reframing of the Union Jack, and an album preserving the golden future of British rap.</div>
+                </div>
+                <div class="content-card">
+                    <div class="card-headline">SPOTIFY INVITED ME TO THEIR NEW LISTENING LOUNGE</div>
+                    <div class="card-category">EVENTS</div>
+                    <div class="card-excerpt">Shoes off, slippers on. Hearing Frank Ocean's Nikes on a world-class sound system curated by Nao and Joy Crookes. Quite moving.</div>
+                </div>
+                <div class="content-card">
+                    <div class="card-headline">SAHN'S MUSIC SOUNDS LIKE THE END OF A BEAUTIFUL SUMMER ROMANCE</div>
+                    <div class="card-category">MUSIC</div>
+                    <div class="card-excerpt">A bonafide star. Stunning vocals that reverberate around the soul, with strings that create something truly bittersweet.</div>
+                </div>
+                <div class="content-card">
+                    <div class="card-headline">AMIL RAJA MAKES BEAUTIFUL MUSIC. I CAN'T DESCRIBE IT.</div>
+                    <div class="card-category">MUSIC</div>
+                    <div class="card-excerpt">Bittersweet, melancholic bliss distilled into 79 seconds. An alchemist cooking up mysterious potions in music form.</div>
+                </div>
+                <div class="content-card">
+                    <div class="card-headline">RAGZ ORIGINALE MAKES MUSIC FOR BEAUTIFUL SUNSETS</div>
+                    <div class="card-category">MUSIC</div>
+                    <div class="card-excerpt">From Skepta's Shutdown to Wales Bonner runways — keepsake is music to bask in the golden hour to.</div>
+                </div>
+                <div class="content-card">
+                    <div class="card-headline">BRIAN NASTY IS ONE OF THE UK'S GREAT VISIONARIES</div>
+                    <div class="card-category">MUSIC</div>
+                    <div class="card-excerpt">Effectively genreless — bouncing between rap, indie pop, R&B, and jazz. Crafting worlds through 16mm film and Foundation FM.</div>
+                </div>
+                <div class="content-card">
+                    <div class="card-headline">SAAM SULTAN'S MUSIC SOUNDS LIKE YOUR TRAIN ARRIVING INTO LONDON</div>
+                    <div class="card-category">MUSIC</div>
+                    <div class="card-excerpt">Passing Battersea Power Station as I Might flows into Jump Shot. Music that lifts your soul. A rise that feels inevitable.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Artists Grid -->
+    <section class="section features" id="features">
+        <div class="container">
+            <div class="section-label center">
+                <span class="label-num">04</span>
+                <span class="label-text">FEATURED ARTISTS & BRANDS</span>
+            </div>
+            <h2 class="section-title center">Spotlighting the <span class="accent">next wave</span></h2>
+            <div class="artist-grid">
+                <div class="artist-card" data-category="fashion">
+                    <div class="artist-name">Avere Forza</div>
+                    <div class="artist-type">Fashion Brand</div>
+                </div>
+                <div class="artist-card" data-category="music">
+                    <div class="artist-name">Slew</div>
+                    <div class="artist-type">Artist</div>
+                </div>
+                <div class="artist-card" data-category="music">
+                    <div class="artist-name">Unknown T</div>
+                    <div class="artist-type">Rapper</div>
+                </div>
+                <div class="artist-card" data-category="music">
+                    <div class="artist-name">Sinn6r</div>
+                    <div class="artist-type">Artist</div>
+                </div>
+                <div class="artist-card" data-category="music">
+                    <div class="artist-name">Sophia Stel</div>
+                    <div class="artist-type">Artist / A24 Music</div>
+                </div>
+                <div class="artist-card" data-category="music">
+                    <div class="artist-name">Afrosurrealist</div>
+                    <div class="artist-type">Producer / Artist</div>
+                </div>
+                <div class="artist-card" data-category="music">
+                    <div class="artist-name">Sahn</div>
+                    <div class="artist-type">Vocalist</div>
+                </div>
+                <div class="artist-card" data-category="music">
+                    <div class="artist-name">Amil Raja</div>
+                    <div class="artist-type">Artist / Producer</div>
+                </div>
+                <div class="artist-card" data-category="music">
+                    <div class="artist-name">Ragz Originale</div>
+                    <div class="artist-type">Producer / Artist</div>
+                </div>
+                <div class="artist-card" data-category="music">
+                    <div class="artist-name">Brian Nasty</div>
+                    <div class="artist-type">Artist / Visionary</div>
+                </div>
+                <div class="artist-card" data-category="music">
+                    <div class="artist-name">Saam Sultan</div>
+                    <div class="artist-type">Artist</div>
+                </div>
+                <div class="artist-card" data-category="partner">
+                    <div class="artist-name">Spotify</div>
+                    <div class="artist-type">Brand Partner</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What You Get Section -->
+    <section class="section offerings" id="offerings">
+        <div class="container">
+            <div class="section-grid">
+                <div class="section-label">
+                    <span class="label-num">05</span>
+                    <span class="label-text">THE OFFER</span>
+                </div>
+                <div class="section-content">
+                    <h2 class="section-title">What a partnership<br><span class="accent">looks like.</span></h2>
+                    <div class="offer-grid">
+                        <div class="offer-card">
+                            <div class="offer-icon">01</div>
+                            <h3>Dedicated Feature</h3>
+                            <p>A long-form, deeply researched essay dedicated to your brand or artist — the signature ABG format that drives genuine engagement.</p>
+                        </div>
+                        <div class="offer-card">
+                            <div class="offer-icon">02</div>
+                            <h3>Event Coverage</h3>
+                            <p>Authentic, first-person coverage of launches, listening parties, and cultural moments — like the Spotify Listening Lounge feature.</p>
+                        </div>
+                        <div class="offer-card">
+                            <div class="offer-icon">03</div>
+                            <h3>Brand Storytelling</h3>
+                            <p>Weaving your brand into the wider cultural narrative. ABG doesn't just review — it contextualises, elevates, and connects.</p>
+                        </div>
+                        <div class="offer-card">
+                            <div class="offer-icon">04</div>
+                            <h3>Audience Access</h3>
+                            <p>Direct reach to a highly engaged community of culture-first consumers — tastemakers, early adopters, and scene-embedded readers.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonial / Pull Quote -->
+    <section class="section quote-section">
+        <div class="container">
+            <blockquote class="pull-quote">
+                <p>"I'm just a lad from Wales with a phone and opinions. Thank you for supporting me and allowing me to be in those rooms."</p>
+                <cite>— William Dalgleish, A Bluffers Guide</cite>
+            </blockquote>
+        </div>
+    </section>
+
+    <!-- Collaborate CTA -->
+    <section class="section collab" id="collab">
+        <div class="container">
+            <div class="collab-inner">
+                <div class="section-label center">
+                    <span class="label-num">06</span>
+                    <span class="label-text">LET'S TALK</span>
+                </div>
+                <h2 class="collab-title">Ready to reach the<br><span class="accent">culture-first audience?</span></h2>
+                <p class="collab-desc">Whether you're an emerging artist, an established brand, or a platform looking to connect with the UK's most engaged music and fashion community — let's make something special.</p>
+                <div class="collab-links">
+                    <a href="https://www.instagram.com/abluffersguide/" target="_blank" class="btn btn-primary btn-lg">@abluffersguide on Instagram</a>
+                    <a href="https://www.instagram.com/william_dalgleish/" target="_blank" class="btn btn-outline btn-lg">@william_dalgleish</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">A BLUFFERS GUIDE</div>
+                <div class="footer-tagline">media consumption final boss.</div>
+                <div class="footer-copy">&copy; 2026 A Bluffers Guide. All rights reserved.</div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
