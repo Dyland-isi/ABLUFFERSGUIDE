@@ -1,0 +1,9 @@
+{
+  "name": "abluffersguide-auto-publisher",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.20.0",
+    "node-fetch": "^3.3.0"
+  }
+}
