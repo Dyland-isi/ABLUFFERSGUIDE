@@ -61,7 +61,22 @@ ul{list-style:none}
 }
 .nav-ig:hover{opacity:0.6}
 .burger{display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:5px;padding:4px}
-.burger span{display:block;width:20px;height:1px;background:#1a2fd4}
+.burger span{display:block;width:20px;height:1px;background:#1a2fd4;transition:transform 0.3s}
+/* Mobile menu */
+.mobile-nav{
+  display:none;position:fixed;top:68px;left:0;right:0;bottom:0;
+  background:rgba(255,255,255,0.98);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  z-index:899;flex-direction:column;align-items:center;justify-content:center;gap:2.5rem;
+}
+.mobile-nav.open{display:flex}
+.mobile-nav a{
+  font-family:Arial,Helvetica,sans-serif;font-size:1.2rem;font-weight:700;
+  letter-spacing:0.1em;text-transform:uppercase;color:#1a2fd4;
+  transition:opacity 0.2s;
+}
+.mobile-nav a:hover{opacity:0.6}
+.burger.open span:first-child{transform:rotate(45deg) translate(2px,2px)}
+.burger.open span:last-child{transform:rotate(-45deg) translate(2px,-2px)}
 
 /* ── HERO ── */
 #hero{
@@ -347,6 +362,12 @@ footer{
   </nav>
   <button class="burger" id="burger"><span></span><span></span></button>
 </header>
+
+<div class="mobile-nav" id="mobileNav">
+  <a href="#about" onclick="closeMobileNav()">About</a>
+  <a href="archive.html">Archive</a>
+  <a href="https://www.instagram.com/abluffersguide/" target="_blank">Instagram</a>
+</div>
 
 <!-- HERO -->
 <section id="hero">
@@ -709,5 +730,21 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   });
 });
 </script>
+<script>
+// Burger menu
+const burger = document.getElementById('burger');
+const mobileNav = document.getElementById('mobileNav');
+if (burger && mobileNav) {
+  burger.addEventListener('click', () => {
+    burger.classList.toggle('open');
+    mobileNav.classList.toggle('open');
+    document.body.style.overflow = mobileNav.classList.contains('open') ? 'hidden' : '';
+  });
+}
+function closeMobileNav() {
+  burger.classList.remove('open');
+  mobileNav.classList.remove('open');
+  document.body.style.overflow = '';
+}</script>
 </body>
 </html>
