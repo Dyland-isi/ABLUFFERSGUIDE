@@ -85,7 +85,7 @@ const SYSTEM_PROMPT = `You are a content formatter for A Bluffers Guide, a minim
 async function formatWithClaude(client, caption, timestamp) {
   const msg = await client.messages.create({
     model: "claude-sonnet-4-6",
-    max_tokens: 1024,
+    max_tokens: 2048,
     system: SYSTEM_PROMPT,
     messages: [{
       role: "user",
@@ -100,7 +100,7 @@ Return this exact JSON structure:
 {
   "headline": "punchy title from caption, UPPERCASE, max 10 words",
   "category": "one of MUSIC / FILM / ESSAY / CULTURE / PHOTOGRAPHY",
-  "body_paragraphs": ["array of paragraph strings, preserve author voice exactly, keep lowercase style"],
+  "body_paragraphs": ["array of paragraph strings, preserve author voice exactly, keep lowercase style, do NOT change any wording"],
   "slug": "url-safe-hyphenated-max-5-words",
   "date": "e.g. Apr 2026",
   "reading_time": "e.g. 3 min read",
@@ -120,7 +120,7 @@ async function formatWithRetry(client, caption, timestamp) {
     try {
       const msg = await client.messages.create({
         model: "claude-sonnet-4-6",
-        max_tokens: 1024,
+        max_tokens: 2048,
         system: "Return ONLY a valid JSON object. No markdown. No code fences. No explanation. Just raw JSON.",
         messages: [{
           role: "user",
@@ -142,7 +142,8 @@ headline, category (MUSIC/FILM/ESSAY/CULTURE/PHOTOGRAPHY), body_paragraphs, slug
 
 
 // ═══════════════════════════════════════════════════
-// STEP 4 — GENERATE POST HTML (MAGAZINE SPLIT)
+// STEP 4 — GENERATE STANDALONE POST HTML
+// Uses identical fp-* styles from abluffersguide.html
 // ═══════════════════════════════════════════════════
 
 function uniqueSlug(slug) {
@@ -164,45 +165,142 @@ function escapeHTML(str) {
 }
 
 function generatePostHTML(post, igUrl) {
-  const paragraphs = post.body_paragraphs
-    .map(p => `        <p>${escapeHTML(p)}</p>`)
+  const bodyParagraphs = post.body_paragraphs
+    .map((p, i, arr) => {
+      if (i === arr.length - 1) {
+        return `        <p class="fp-cta">${escapeHTML(p)}</p>`;
+      }
+      return `        <p>${escapeHTML(p)}</p>`;
+    })
     .join("\n");
 
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${escapeHTML(post.headline)} — A Bluffers Guide</title>
-  <meta name="description" content="${escapeHTML(post.excerpt)}">
-  <meta property="og:title" content="${escapeHTML(post.headline)} — A Bluffers Guide">
-  <meta property="og:description" content="${escapeHTML(post.excerpt)}">
-  <link rel="stylesheet" href="../style.css">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>${escapeHTML(post.headline)} — A BLUFFERS GUIDE</title>
+<meta name="description" content="${escapeHTML(post.excerpt)}"/>
+<meta property="og:title" content="${escapeHTML(post.headline)} — A BLUFFERS GUIDE"/>
+<meta property="og:description" content="${escapeHTML(post.excerpt)}"/>
+<style>
+:root{
+  --navy:#1a2fd4;
+  --font:Arial,Helvetica,sans-serif;
+  --ease:cubic-bezier(0.16,1,0.3,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{background:#ffffff;color:#1a2fd4;font-family:var(--font);font-weight:700;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+::selection{background:rgba(0,229,204,0.2)}
+
+/* Header */
+#header{
+  position:fixed;top:0;left:0;right:0;z-index:900;
+  padding:0 2.5rem;height:68px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(255,255,255,0.92);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(26,47,212,0.1);
+}
+.logo{display:flex;align-items:center;gap:0.6rem}
+.logo-text{
+  font-family:var(--font);font-size:1rem;font-weight:700;
+  color:#1a2fd4;letter-spacing:0;
+}
+.nav-links{display:flex;align-items:center;gap:2.2rem}
+.nav-link{
+  font-family:var(--font);font-size:0.75rem;font-weight:700;letter-spacing:0.1em;
+  text-transform:uppercase;color:#1a2fd4;transition:opacity 0.2s;
+}
+.nav-link:hover{opacity:0.7}
+
+/* Article split */
+.fp-section{padding:0;padding-top:68px}
+.fp-split{display:flex;min-height:100vh}
+.fp-left{
+  width:55%;background:#ffffff;padding:3rem;
+  display:flex;align-items:center;justify-content:center;
+}
+.fp-headline{
+  font-family:Arial,Helvetica,sans-serif;font-weight:700;
+  font-size:clamp(1.8rem,4.5vw,3.8rem);color:#1a2fd4;
+  text-transform:uppercase;line-height:1.05;text-align:center;
+}
+.fp-right{
+  width:45%;background:#1a2fd4;padding:3rem;
+  display:flex;flex-direction:column;justify-content:center;
+  overflow-y:auto;
+}
+.fp-meta{display:flex;align-items:center;gap:1.5rem;margin-bottom:2rem}
+.fp-tag{
+  font-family:Arial,Helvetica,sans-serif;font-weight:700;font-size:0.7rem;
+  letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.45);
+}
+.fp-date{
+  font-family:Arial,Helvetica,sans-serif;font-weight:700;font-size:0.75rem;
+  color:rgba(255,255,255,0.45);
+}
+.fp-body p{
+  font-family:Arial,Helvetica,sans-serif;font-weight:700;font-size:0.95rem;
+  line-height:1.75;color:#ffffff;margin-bottom:1.2rem;
+}
+.fp-body p.fp-cta{font-size:1.05rem;margin-bottom:0}
+.fp-ig-link{
+  display:inline-block;margin-top:2rem;
+  font-family:var(--font);font-size:0.7rem;font-weight:700;
+  letter-spacing:0.1em;text-transform:uppercase;
+  color:rgba(255,255,255,0.45);transition:color 0.2s;
+}
+.fp-ig-link:hover{color:#ffffff}
+.fp-back{
+  display:inline-block;margin-top:1.2rem;
+  font-family:var(--font);font-size:0.7rem;font-weight:700;
+  letter-spacing:0.1em;text-transform:uppercase;
+  color:rgba(255,255,255,0.35);transition:color 0.2s;
+}
+.fp-back:hover{color:#ffffff}
+
+@media(max-width:768px){
+  .fp-split{flex-direction:column}
+  .fp-left{width:100%;min-height:50vw}
+  .fp-right{width:100%}
+  #header{padding:0 1.5rem}
+}
+</style>
 </head>
 <body>
-  <nav class="site-nav">
-    <a href="../index.html" class="nav-logo">a bluffers guide</a>
-    <div class="nav-links">
-      <a href="../index.html">Journal</a>
-      <a href="../archive.html">Archive</a>
-    </div>
-  </nav>
 
-  <div class="article-split">
-    <div class="article-left">
-      <h1 class="article-headline">${escapeHTML(post.headline)}</h1>
+<header id="header">
+  <a href="../index.html" class="logo">
+    <span class="logo-text">A BLUFFERS GUIDE</span>
+  </a>
+  <nav class="nav-links">
+    <a href="../index.html" class="nav-link">Home</a>
+    <a href="../archive.html" class="nav-link">Archive</a>
+    <a href="https://www.instagram.com/abluffersguide/" target="_blank" class="nav-link">Instagram ↗</a>
+  </nav>
+</header>
+
+<section class="fp-section">
+  <div class="fp-split">
+    <div class="fp-left">
+      <h1 class="fp-headline">${escapeHTML(post.headline)}</h1>
     </div>
-    <div class="article-right">
-      <div class="article-date">${escapeHTML(post.date)}</div>
-      <div class="article-body">
-${paragraphs}
+    <div class="fp-right">
+      <div class="fp-meta">
+        <span class="fp-tag">${escapeHTML(post.category)}</span>
+        <span class="fp-date">${escapeHTML(post.date)}</span>
       </div>
-      <a href="${igUrl}" target="_blank" class="article-cta">
-        View original on Instagram →
-      </a>
-      <a href="../index.html" class="article-back">← Back to journal</a>
+      <div class="fp-body">
+${bodyParagraphs}
+      </div>
+      <a href="${igUrl}" target="_blank" class="fp-ig-link">View on Instagram →</a>
+      <a href="../index.html" class="fp-back">← Back to journal</a>
     </div>
   </div>
+</section>
+
 </body>
 </html>
 `;
@@ -210,110 +308,115 @@ ${paragraphs}
 
 
 // ═══════════════════════════════════════════════════
-// STEP 5 — REBUILD INDEX.HTML & ARCHIVE.HTML
+// STEP 5 — UPDATE INDEX.HTML (insert between markers)
+// and REBUILD ARCHIVE.HTML
 // ═══════════════════════════════════════════════════
 
-function generateCardHTML(entry) {
-  return `    <article class="post-card" data-category="${entry.category}" data-id="${entry.id}">
-      <a href="posts/${entry.slug}.html">
-        <div class="card-image-wrapper">
-          <span class="card-hero-headline">${escapeHTML(entry.headline)}</span>
-        </div>
-        <div class="card-content">
-          <span class="card-category">${entry.category}</span>
-          <h2 class="card-title">${escapeHTML(entry.headline)}</h2>
-          <p class="card-excerpt">${escapeHTML(entry.excerpt)}</p>
-          <div class="card-meta">
-            <span class="card-date">${entry.date}</span>
-            <span class="card-reading-time">${entry.reading_time}</span>
-          </div>
-        </div>
-      </a>
-    </article>`;
+function generateArticleBlock(entry) {
+  const bodyParagraphs = entry.body_paragraphs
+    ? entry.body_paragraphs.map((p, i, arr) => {
+        if (i === arr.length - 1) {
+          return `        <p class="fp-cta">${escapeHTML(p)}</p>`;
+        }
+        return `        <p>${escapeHTML(p)}</p>`;
+      }).join("\n")
+    : `        <p>${escapeHTML(entry.excerpt)}</p>`;
+
+  return `<article class="post-card">
+<section class="fp-section">
+  <div class="fp-split">
+    <div class="fp-left">
+      <h2 class="fp-headline"><a href="posts/${entry.slug}.html" style="color:inherit;text-decoration:none">${escapeHTML(entry.headline)}</a></h2>
+    </div>
+    <div class="fp-right">
+      <div class="fp-meta">
+        <span class="fp-tag">${entry.category}</span>
+        <span class="fp-date">${entry.date}</span>
+      </div>
+      <div class="fp-body">
+${bodyParagraphs}
+      </div>
+    </div>
+  </div>
+</section>
+</article>`;
 }
 
-function rebuildIndex(manifest) {
+function updateIndex(manifest) {
+  let html = fs.readFileSync(INDEX_PATH, "utf-8");
+
+  const startMarker = "<!-- POSTS_START -->";
+  const endMarker = "<!-- POSTS_END -->";
+  const startIdx = html.indexOf(startMarker);
+  const endIdx = html.indexOf(endMarker);
+
+  if (startIdx === -1 || endIdx === -1) {
+    console.error("Could not find POSTS_START/POSTS_END markers in index.html");
+    return;
+  }
+
   const latest = manifest.slice(0, MAX_HOMEPAGE_POSTS);
-  const cards = latest.map(generateCardHTML).join("\n");
+  const articles = latest.map(generateArticleBlock).join("\n");
 
-  const html = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>A Bluffers Guide — Journal</title>
-  <meta name="description" content="A Bluffers Guide — culture, music, and media. The journal.">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <nav class="site-nav">
-    <a href="index.html" class="nav-logo">a bluffers guide</a>
-    <div class="nav-links">
-      <a href="index.html">Journal</a>
-      <a href="archive.html">Archive</a>
-    </div>
-  </nav>
+  html = html.slice(0, startIdx + startMarker.length) + "\n" + articles + "\n" + html.slice(endIdx);
 
-  <section class="hero">
-    <h1 class="hero-title">A BLUFFERS <span class="accent">GUIDE</span></h1>
-    <p class="hero-tagline">media consumption final boss.</p>
-  </section>
-
-  <div class="section-header">
-    <span class="section-title">Latest</span>
-    <a href="archive.html" class="section-link">View all →</a>
-  </div>
-
-  <div class="posts-grid">
-    <!-- POSTS_START -->
-${cards}
-    <!-- POSTS_END -->
-  </div>
-
-  <footer class="site-footer">
-    &copy; 2026 A Bluffers Guide. All rights reserved.
-  </footer>
-</body>
-</html>
-`;
   fs.writeFileSync(INDEX_PATH, html);
 }
 
 function rebuildArchive(manifest) {
-  const cards = manifest.map(generateCardHTML).join("\n");
+  const articles = manifest.map(generateArticleBlock).join("\n");
+
+  // Read index.html to extract the full <style> block for consistent styling
+  const indexHTML = fs.readFileSync(INDEX_PATH, "utf-8");
+  const styleMatch = indexHTML.match(/<style>([\s\S]*?)<\/style>/);
+  const styles = styleMatch ? styleMatch[1] : "";
 
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Archive — A Bluffers Guide</title>
-  <meta name="description" content="All articles from A Bluffers Guide.">
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Archive — A BLUFFERS GUIDE</title>
+<meta name="description" content="All articles from A Bluffers Guide."/>
+<style>
+${styles}
+.archive-title{
+  font-family:Arial,Helvetica,sans-serif;font-weight:700;
+  font-size:clamp(2rem,5vw,4rem);color:#1a2fd4;
+  text-transform:uppercase;line-height:1.05;
+  padding:6rem 2.5rem 2rem;
+}
+.archive-count{
+  font-family:Arial,Helvetica,sans-serif;font-weight:700;
+  font-size:0.75rem;letter-spacing:0.1em;
+  color:rgba(26,47,212,0.45);padding:0 2.5rem 3rem;
+}
+</style>
 </head>
 <body>
-  <nav class="site-nav">
-    <a href="index.html" class="nav-logo">a bluffers guide</a>
-    <div class="nav-links">
-      <a href="index.html">Journal</a>
-      <a href="archive.html">Archive</a>
-    </div>
+
+<header id="header">
+  <a href="index.html" class="logo">
+    <span class="logo-text">A BLUFFERS GUIDE</span>
+  </a>
+  <nav class="nav-links">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="archive.html" class="nav-link">Archive</a>
+    <a href="https://www.instagram.com/abluffersguide/" target="_blank" class="nav-link">Instagram ↗</a>
   </nav>
+</header>
 
-  <div class="archive-header">
-    <h1 class="archive-title">Archive</h1>
-    <p class="archive-count">${manifest.length} article${manifest.length === 1 ? "" : "s"}</p>
-  </div>
+<div style="padding-top:68px">
+  <h1 class="archive-title">Archive</h1>
+  <p class="archive-count">${manifest.length} article${manifest.length === 1 ? "" : "s"}</p>
+</div>
 
-  <div class="posts-grid">
-    <!-- ARCHIVE_START -->
-${cards}
-    <!-- ARCHIVE_END -->
-  </div>
+${articles}
 
-  <footer class="site-footer">
-    &copy; 2026 A Bluffers Guide. All rights reserved.
-  </footer>
+<footer style="padding:2rem 2.5rem;border-top:1px solid rgba(26,47,212,0.1);text-align:center">
+  <p style="font-size:0.7rem;letter-spacing:0.1em;color:rgba(26,47,212,0.35)">© 2026 A BLUFFERS GUIDE</p>
+</footer>
+
 </body>
 </html>
 `;
@@ -387,7 +490,7 @@ async function main() {
       continue;
     }
 
-    // Write post HTML
+    // Write standalone post HTML
     const slug = uniqueSlug(formatted.slug);
     const postHTML = generatePostHTML(formatted, igUrl);
     fs.writeFileSync(path.join(POSTS_DIR, `${slug}.html`), postHTML);
@@ -399,6 +502,7 @@ async function main() {
       slug,
       headline: formatted.headline,
       category: formatted.category,
+      body_paragraphs: formatted.body_paragraphs,
       excerpt: formatted.excerpt,
       date: formatted.date,
       reading_time: formatted.reading_time,
@@ -414,11 +518,11 @@ async function main() {
     process.exit(0);
   }
 
-  // ── Step 5: Rebuild index + archive ──
+  // ── Step 5: Update index + rebuild archive ──
   saveManifest(manifest);
-  rebuildIndex(manifest);
+  updateIndex(manifest);
   rebuildArchive(manifest);
-  console.log(`\nRebuilt index.html (${Math.min(manifest.length, MAX_HOMEPAGE_POSTS)} cards) and archive.html (${manifest.length} cards)`);
+  console.log(`\nUpdated index.html (${Math.min(manifest.length, MAX_HOMEPAGE_POSTS)} articles) and archive.html (${manifest.length} articles)`);
 
   // ── Step 6: Save seen IDs ──
   saveSeen(seen);
